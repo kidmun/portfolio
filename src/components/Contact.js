@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import contactImg from "../assets/img/contact-img.svg";
+import contactImg from "../assets/img/message.png";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
 
 export const Contact = () => {
+  const [httpError, setHttpError] = useState(false);
   const formInitialDetails = {
     firstName: '',
     lastName: '',
@@ -26,26 +27,44 @@ export const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonText("Sending...");
-    let response = await fetch("http://localhost:5000/contact", {
+    const sendData = async () => {let response = await fetch("http://localhost:5000/contact", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify(formDetails),
     });
+    if (!response.ok){
+      console.log("err");
+     throw new Error("failed to send");
+    }
+    setHttpError(false);
     setButtonText("Send");
     let result = await response.json();
     setFormDetails(formInitialDetails);
-    if (result.code == 200) {
+    if (result.code === 200) {
       setStatus({ succes: true, message: 'Message sent successfully'});
     } else {
       setStatus({ succes: false, message: 'Something went wrong, please try again later.'});
     }
+    
+    
+  }
+  sendData().catch (err => {
+    
+    setButtonText('send');
+    setHttpError(true);
+  })
+
+    
+   
   };
 
   return (
     <section className="contact" id="connect">
+    
       <Container>
+       
         <Row className="align-items-center">
           <Col size={12} md={6}>
             <TrackVisibility>
@@ -55,9 +74,14 @@ export const Contact = () => {
             </TrackVisibility>
           </Col>
           <Col size={12} md={6}>
+              <div className="failed">
+                 {httpError && <h2 >Sending data failed</h2>}
+              </div>
             <TrackVisibility>
               {({ isVisible }) =>
+             
                 <div className={isVisible ? "animate__animated animate__fadeIn" : ""}>
+                  
                 <h2>Get In Touch</h2>
                 <form onSubmit={handleSubmit}>
                   <Row>

@@ -75,7 +75,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 p.success {
-	color: green;
+	color: white;
 }
 
 p.danger {
@@ -368,7 +368,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   overflow: hidden;
 }
 .project .nav.nav-pills .nav-item {
-  width: 33.33333%;
+  width: 50%;
 }
 .project .nav.nav-pills .nav-link {
   background-color: transparent;
@@ -418,6 +418,11 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   border-radius: 30px;
   overflow: hidden;
   margin-bottom: 24px;
+ 
+}
+.proj-imgbx img {
+  height:500px;
+  width: 900px;
 }
 .proj-imgbx::before {
   content: "";
@@ -468,8 +473,11 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 /************ Projects Css ************/
 .contact {
-  background: linear-gradient(90.21deg, #AA367C -5.91%, #4A2FBD 111.58%);
+  background: linear-gradient(90.21deg, #200b2e -5.91%, #4A2FBD 111.58%);
   padding: 60px 0 200px 0;
+}
+.failed {
+  color: red;
 }
 .contact img {
   width: 92%;

@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { ArrowRightCircle } from "react-bootstrap-icons";
-import headerImg from "../assets/img/header-img.svg";
+import TrackVisibility from 'react-on-screen';
+import headerImg from "../assets/img/header.jpg";
 
 export const Banner = () => {
   const [loopNum, setLoopNum] = useState(0);
@@ -9,20 +9,11 @@ export const Banner = () => {
   const [text, setText] = useState("");
   const [delta, setDelta] = useState(300 - Math.random() * 100);
   const [index, setIndex] = useState(1);
-  const toRotate = ["Web Developer", "Web Designer", "UI/UX Designer"];
+  const toRotate = ["Web Developer", "Computer Engineering Student"];
   const period = 2000;
 
-  useEffect(() => {
-    let ticker = setInterval(() => {
-      tick();
-    }, delta);
 
-    return () => {
-      clearInterval(ticker);
-    };
-  }, [text]);
-
-  const tick = () => {
+  const tick = useCallback(() => {
     let i = loopNum % toRotate.length;
     let fullText = toRotate[i];
     let updatedText = isDeleting
@@ -47,7 +38,18 @@ export const Banner = () => {
     } else {
       setIndex((prevIndex) => prevIndex + 1);
     }
-  };
+  }, [isDeleting, loopNum, text.length, toRotate]);
+  useEffect(() => {
+    let ticker = setInterval(() => {
+      tick();
+    }, delta);
+
+    return () => {
+      clearInterval(ticker);
+    };
+  }, [text, delta, tick]);
+  
+  
 
   return (
     <section className="banner" id="home">
@@ -56,18 +58,23 @@ export const Banner = () => {
           <Col xs={12} md={6} xl={7}>
             <span className="tagline">Welcome to my Portfolio</span>
             <h1>
-              {`web 0`}
-              <span className="wrap">{text}</span>
+              Hi, I am Kidus  
+             
             </h1>
-            <p>this is just for tesing purpose so you can ignore it</p>
-            <button onClick={() => console.log("connected")}>
-              Let's connect
-              <ArrowRightCircle size={25} />
-            </button>
+            <h1> <span className="wrap">{text}</span></h1>
+            <p>Self-driven and motivated Computer Engineering student adept at developing, 
+              testing and implementing software products</p>
+            
           </Col>
           <Col xs={12} md={6} xl={5}>
-            <img src={headerImg} alt="Header Img" />
+            <TrackVisibility>
+              {({ isVisible }) =>
+                <div className={isVisible ? "animate__animated animate__zoomIn" : ""}>
+                  <img src={headerImg} alt="Header Img"/>
+                </div>}
+            </TrackVisibility>
           </Col>
+         
         </Row>
       </Container>
     </section>
